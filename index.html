@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ActivityVault</title>
+    <link rel="icon" type="image/png" href="assets/activityvault-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <nav class="topbar" aria-label="Primary navigation">
+        <a class="brand" href="#dashboard" aria-label="ActivityVault home">
+          <img class="brand-mark" src="assets/activityvault-logo.png" alt="" aria-hidden="true" />
+          <span>ActivityVault</span>
+        </a>
+
+        <div class="nav-links">
+          <a class="active" href="#dashboard">Dashboard</a>
+          <a href="#add-activity">Add Activity</a>
+          <a href="#archive">Archive</a>
+          <a href="#export-center">Export Center</a>
+        </div>
+
+        <div class="nav-avatar" aria-hidden="true">AV</div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="app-page app-light-page dashboard-page active-page" id="dashboard">
+        <div class="page-heading">
+          <p class="eyebrow">Student portfolio builder</p>
+          <h1>Dashboard</h1>
+          <p>
+            Build your student story from everyday experiences for scholarships, resumes, transfer
+            applications, and personal portfolios.
+          </p>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="readiness-hero card">
+            <div class="readiness-ring" id="portfolioRing" aria-label="Portfolio readiness circular progress">
+              <div>
+                <strong id="portfolioReadiness">0%</strong>
+                <span>Portfolio Readiness</span>
+              </div>
+            </div>
+            <p id="readinessSummary">Add activities to begin measuring your portfolio readiness.</p>
+            <div class="readiness-check-block">
+              <span class="control-label">Readiness Checklist</span>
+              <ul class="readiness-checklist" id="readinessChecklist"></ul>
+            </div>
+          </article>
+
+          <section class="stat-grid" aria-label="Activity summary">
+            <article class="stat-card dark-card">
+              <span class="stat-label">Total Activities</span>
+              <strong id="totalActivities">0</strong>
+              <small>Saved experiences</small>
+            </article>
+
+            <article class="stat-card">
+              <span class="stat-label">Total Hours</span>
+              <strong id="totalHours">0</strong>
+              <div class="mini-track"><span id="hoursProgress"></span></div>
+              <small>Goal: 20 hours</small>
+            </article>
+
+            <article class="stat-card">
+              <span class="stat-label">Categories Used</span>
+              <strong id="categoriesUsed">0</strong>
+              <div class="category-mini-list" id="categoryMiniList"></div>
+            </article>
+
+            <article class="stat-card badge-card">
+              <span class="stat-label">Portfolio Summary</span>
+              <strong id="portfolioBadge">Starter</strong>
+              <small id="portfolioBadgeText">Add activities to unlock a stronger profile.</small>
+            </article>
+          </section>
+
+          <section class="recent-card card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Latest entries</p>
+                <h2>Recent Experience</h2>
+              </div>
+              <a class="text-action" href="#archive">View Archive</a>
+            </div>
+            <div class="recent-list" id="recentExperienceList"></div>
+          </section>
+
+          <aside class="next-card card">
+            <p class="eyebrow">Guidance</p>
+            <h2>Next Steps</h2>
+            <ul id="readinessNextSteps"></ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="app-page app-light-page add-activity-page form-page" id="add-activity">
+        <div class="page-heading">
+          <p class="eyebrow">New entry</p>
+          <h1>New Experience</h1>
+          <p>
+            Document activities for scholarships, resumes, transfer applications, and personal
+            portfolios.
+          </p>
+        </div>
+
+        <div class="form-layout">
+          <form class="activity-form" id="activityForm">
+            <section class="form-card">
+              <div class="section-heading">
+                <p class="eyebrow">Core details</p>
+                <h2>Activity Details</h2>
+              </div>
+
+              <div class="field-grid">
+                <label>
+                  Activity Title
+                  <input id="title" name="title" type="text" required placeholder="Science fair mentor" />
+                </label>
+
+                <label>
+                  Organization / Club
+                  <input id="organization" name="organization" type="text" placeholder="Robotics Club" />
+                </label>
+
+                <label>
+                  Category
+                  <select id="category" name="category" required>
+                    <option value="">Select category</option>
+                    <option>Volunteering</option>
+                    <option>Leadership</option>
+                    <option>Work</option>
+                    <option>Project</option>
+                    <option>Competition</option>
+                    <option>Certificate</option>
+                    <option>Academic</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+
+                <label>
+                  Role / Position
+                  <input id="role" name="role" type="text" placeholder="Team lead" />
+                </label>
+              </div>
+
+              <label>
+                Description
+                <textarea id="description" name="description" rows="4" placeholder="What did you do?"></textarea>
+              </label>
+            </section>
+
+            <section class="form-card">
+              <div class="section-heading">
+                <p class="eyebrow">Timeline</p>
+                <h2>Dates & Hours</h2>
+              </div>
+
+              <div class="field-grid three-column">
+                <label>
+                  Start Date
+                  <input id="startDate" name="startDate" type="date" />
+                </label>
+
+                <label>
+                  End Date
+                  <input id="endDate" name="endDate" type="date" />
+                </label>
+
+                <label>
+                  Weekly Hours
+                  <input id="weeklyHours" name="weeklyHours" type="number" min="0" step="0.5" placeholder="e.g. 3" />
+                </label>
+              </div>
+
+              <div class="hours-estimate-card" aria-live="polite">
+                <span class="control-label">Estimated Total Hours</span>
+                <strong id="estimatedTotalHoursPreview">Add dates and weekly hours to calculate.</strong>
+                <p id="hoursEstimateMessage">Calculated from the activity period and weekly hours.</p>
+                <input id="estimatedTotalHours" name="estimatedTotalHours" type="hidden" value="" />
+              </div>
+            </section>
+
+            <section class="form-card">
+              <div class="section-heading">
+                <p class="eyebrow">Reflection</p>
+                <h2>Impact & Skills</h2>
+              </div>
+
+              <div class="skill-selector" aria-labelledby="skillsLabel">
+                <span class="skill-label" id="skillsLabel">Skills Used</span>
+                <input id="skills" name="skills" type="hidden" />
+                <div class="selected-skills" id="selectedSkills" aria-live="polite"></div>
+
+                <div class="skill-input-row">
+                  <input id="skillInput" type="text" placeholder="Add a skill..." autocomplete="off" />
+                  <button class="secondary-action" id="addSkillButton" type="button">Add</button>
+                </div>
+
+                <div class="suggested-skills">
+                  <span class="control-label">Suggested Skills</span>
+                  <div class="suggested-skill-list" id="suggestedSkills"></div>
+                </div>
+              </div>
+
+              <label>
+                Impact / Result
+                <textarea id="impact" name="impact" rows="3" placeholder="What changed because of your work?"></textarea>
+              </label>
+            </section>
+
+            <section class="form-card">
+              <div class="section-heading">
+                <p class="eyebrow">Proof materials</p>
+                <h2>Evidence / Proof</h2>
+              </div>
+
+              <div class="field-grid">
+                <label>
+                  Evidence Title
+                  <input
+                    id="evidenceTitle"
+                    name="evidenceTitle"
+                    type="text"
+                    placeholder="e.g. Volunteer certificate, GitHub repo, event photo, reflection PDF"
+                  />
+                </label>
+
+                <label>
+                  Evidence Type
+                  <select id="evidenceType" name="evidenceType">
+                    <option value="">Select evidence type</option>
+                    <option>Certificate</option>
+                    <option>Link</option>
+                    <option>Screenshot</option>
+                    <option>Photo</option>
+                    <option>GitHub / Project</option>
+                    <option>Email Confirmation</option>
+                    <option>Report / Document</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+              </div>
+
+              <label>
+                Evidence URL or File Name
+                <input
+                  id="evidenceUrl"
+                  name="evidenceUrl"
+                  type="text"
+                  placeholder="Paste a link or write the file name"
+                />
+              </label>
+
+              <label>
+                Evidence Notes
+                <textarea
+                  id="evidenceNotes"
+                  name="evidenceNotes"
+                  rows="3"
+                  placeholder="Briefly explain what this proof shows."
+                ></textarea>
+              </label>
+
+              <button class="primary-action" type="submit">Save Activity</button>
+            </section>
+          </form>
+
+          <aside class="form-sidebar">
+            <section class="tips-card">
+              <p class="eyebrow">Pro Tips</p>
+              <h2>Make entries scholarship-ready.</h2>
+              <ul>
+                <li>Use action verbs and specific results.</li>
+                <li>Add weekly hours and dates when you can measure commitment.</li>
+                <li>Write impact as a change you helped create.</li>
+              </ul>
+            </section>
+
+            <section class="help-card">
+              <h3>Need Help?</h3>
+              <p>Start with what you did, who it helped, and what skill you practiced.</p>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="app-page app-light-page archive-page" id="archive">
+        <div class="archive-layout">
+          <aside class="archive-sidebar">
+            <div class="archive-controls" aria-label="Archive controls">
+              <h2>Refine Archive</h2>
+
+              <label class="archive-search">
+                Search Activities
+                <input
+                  id="archiveSearch"
+                  type="search"
+                  placeholder="Keyword, role, or skill..."
+                  autocomplete="off"
+                />
+              </label>
+
+              <div>
+                <span class="control-label">Category</span>
+                <div class="filter-group" aria-label="Filter by category">
+                  <button class="filter-button active" type="button" data-category="All">All</button>
+                  <button class="filter-button" type="button" data-category="Volunteering">Volunteering</button>
+                  <button class="filter-button" type="button" data-category="Leadership">Leadership</button>
+                  <button class="filter-button" type="button" data-category="Work">Work</button>
+                  <button class="filter-button" type="button" data-category="Project">Project</button>
+                  <button class="filter-button" type="button" data-category="Competition">Competition</button>
+                  <button class="filter-button" type="button" data-category="Certificate">Certificate</button>
+                  <button class="filter-button" type="button" data-category="Academic">Academic</button>
+                  <button class="filter-button" type="button" data-category="Other">Other</button>
+                </div>
+              </div>
+
+              <label class="archive-sort">
+                Sort by
+                <select id="archiveSort">
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="hours">Most hours</option>
+                </select>
+              </label>
+            </div>
+          </aside>
+
+          <section class="archive-main">
+            <div class="archive-title-row">
+              <div>
+                <p class="eyebrow">Saved work</p>
+                <h1>Activity Archive</h1>
+                <p>Your journey of growth, service, leadership, and achievement.</p>
+              </div>
+              <a class="primary-link" href="#add-activity">Log Activity</a>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+              <h3>Your archive is ready.</h3>
+              <p>Add your first activity to start building a portfolio you can reuse anywhere.</p>
+            </div>
+
+            <div class="empty-state" id="noMatchState" hidden>
+              <h3>No matching activities.</h3>
+              <p>Try a different category, search term, or sort option to find the entry you need.</p>
+            </div>
+
+            <div class="activity-list" id="activityList" aria-live="polite"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="app-page app-dark-page export-center-page export-page" id="export-center">
+        <div class="page-heading">
+          <p class="eyebrow">Application-ready documents</p>
+          <h1>Export Center</h1>
+          <p>
+            Select saved activities and turn them into polished summaries for scholarships,
+            resumes, transfer applications, personal portfolios, and reports.
+          </p>
+        </div>
+
+        <div class="export-layout">
+          <aside class="export-panel">
+            <div class="export-panel-header">
+              <div>
+                <p class="export-step">1</p>
+                <h2>Purpose & Format</h2>
+                <p>Choose the document style you want to build.</p>
+              </div>
+            </div>
+
+            <label class="export-purpose">
+              Export Purpose
+              <select id="exportPurpose">
+                <option value="scholarship">Scholarship Application Summary</option>
+                <option value="resume">Resume Experience Section</option>
+                <option value="transfer">Transfer Application Activity List</option>
+                <option value="portfolio">Personal Portfolio Summary</option>
+                <option value="report">Club / Volunteer Report</option>
+              </select>
+            </label>
+
+            <div class="export-panel-header">
+              <div>
+                <p class="export-step">2</p>
+                <h2>Activities</h2>
+                <p>Choose one or more saved entries to include.</p>
+              </div>
+              <div class="selection-actions">
+                <button class="secondary-action" id="selectAllActivities" type="button">Select All</button>
+                <button class="secondary-action" id="clearActivitySelection" type="button">Clear</button>
+              </div>
+            </div>
+
+            <div class="empty-state compact" id="exportNoActivities">
+              <h3>Add activities first before generating an export document.</h3>
+            </div>
+
+            <div class="export-selection-list" id="exportActivityList"></div>
+
+            <button class="primary-action" id="generateDocument" type="button">Generate Document</button>
+            <p class="export-warning" id="exportSelectionWarning" hidden>
+              Select at least one activity to generate a document.
+            </p>
+          </aside>
+
+          <section class="export-preview-card">
+            <div class="export-preview-header">
+              <div>
+                <p class="live-preview-label">Live Preview</p>
+                <h2 id="documentFileName">ActivityVault_Export.txt</h2>
+              </div>
+              <div class="document-actions">
+                <button class="secondary-action" id="copyDocument" type="button">Copy Document</button>
+                <button class="secondary-action" id="printDocument" type="button">Print / Save as PDF</button>
+                <button class="secondary-action" id="downloadDocument" type="button">Download .txt</button>
+              </div>
+            </div>
+
+            <article class="document-preview" id="documentPreview">
+              <p class="document-placeholder">
+                Select activities, choose an export purpose, and generate a document.
+              </p>
+            </article>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

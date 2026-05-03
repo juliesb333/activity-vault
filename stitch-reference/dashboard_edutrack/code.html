@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EduTrack Dashboard | Student Activity Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#1a1b41",
+                        "background": "#f8f9fa",
+                        "secondary-fixed-dim": "#d5bbff",
+                        "tertiary-fixed": "#63f7ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#5a5b84",
+                        "on-secondary-container": "#39007a",
+                        "surface-container-low": "#f3f4f5",
+                        "surface": "#f8f9fa",
+                        "on-tertiary-fixed": "#002021",
+                        "surface-container": "#edeeef",
+                        "primary-fixed-dim": "#c2c2f2",
+                        "inverse-primary": "#c2c2f2",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#270057",
+                        "secondary": "#743dc9",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#5b1daf",
+                        "outline-variant": "#c8c5cf",
+                        "on-background": "#191c1d",
+                        "inverse-surface": "#2e3132",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#00969c",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary": "#00090a",
+                        "surface-bright": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#8283af",
+                        "on-primary-fixed": "#16173d",
+                        "on-surface": "#191c1d",
+                        "on-surface-variant": "#47464e",
+                        "surface-container-highest": "#e1e3e4",
+                        "primary-fixed": "#e1e0ff",
+                        "tertiary-fixed-dim": "#00dce5",
+                        "surface-dim": "#d9dadb",
+                        "on-primary-fixed-variant": "#42436b",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-high": "#e7e8e9",
+                        "tertiary-container": "#002426",
+                        "on-tertiary-fixed-variant": "#004f53",
+                        "primary": "#020229",
+                        "secondary-container": "#a874ff",
+                        "error": "#ba1a1a",
+                        "outline": "#77767f",
+                        "secondary-fixed": "#ecdcff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "container-max": "1280px",
+                        "xs": "4px",
+                        "xl": "80px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Space Grotesk"],
+                        "label-bold": ["Inter"],
+                        "display": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "h3": ["Space Grotesk"],
+                        "caption": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h1": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h2": ["30px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "caption": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .raised-card {
+            box-shadow: 0px 10px 30px rgba(26, 27, 65, 0.05);
+            border: 1px solid #f1f1f1;
+        }
+        .portfolio-progress {
+            background: radial-gradient(closest-side, white 79%, transparent 80% 100%),
+                        conic-gradient(#63f7ff 75%, #edeeef 0);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface">
+<header class="bg-white dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800 shadow-[0px_10px_30px_rgba(26,27,65,0.05)] docked full-width top-0 z-50 fixed w-full h-20">
+<div class="max-w-[1280px] mx-auto flex justify-between items-center px-8 h-full">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-black text-indigo-950 dark:text-white tracking-tighter font-h1">EduTrack</span>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="font-['Space_Grotesk'] text-sm font-bold tracking-tight text-indigo-700 dark:text-cyan-400 border-b-2 border-cyan-400 pb-1 h-full flex items-center mt-1" href="#">Dashboard</a>
+<a class="font-['Space_Grotesk'] text-sm font-medium tracking-tight text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-cyan-300 transition-colors" href="#">Add Activity</a>
+<a class="font-['Space_Grotesk'] text-sm font-medium tracking-tight text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-cyan-300 transition-colors" href="#">Archive</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-slate-500 hover:text-indigo-600 transition-colors" data-icon="notifications">notifications</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Student Profile Avatar" class="w-full h-full object-cover" data-alt="close-up portrait of a smiling young college student with a friendly expression and stylish casual attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoHim67U__JNhLz3Fllcd3hHeASMoIqEGofyjFh9VzxcskufTYjg6j-uwNVOAuo_QQavrXHJWlWviV24WnTFvEiItKJADljwFLFBqBR3KhYS0XdKD6wPjxr6c1wBrKTGR3IPq8TKTEYiLJ1hjGnMPqSHSTb8I70dKXTCWmeeAZwgawolwDp418VWHIkxkEdQUVxKh3igLrdkO9WjNgbmwPsqme484b7mE8uMU-GHL9U6Ifb_yU0ogOHepyFjFaKE5sSQ1_rrs2T-PJ"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-8 pt-32 pb-12">
+<div class="flex flex-col gap-gutter">
+<section class="flex flex-col md:flex-row gap-gutter">
+<div class="md:w-1/3 bg-white p-lg rounded-xl raised-card flex flex-col items-center justify-center text-center">
+<h3 class="font-h3 text-h3 text-primary mb-sm">Portfolio Readiness</h3>
+<div class="relative w-48 h-48 rounded-full portfolio-progress flex items-center justify-center mb-md">
+<div class="text-center">
+<span class="font-display text-display block text-primary">75%</span>
+<span class="font-label-bold text-caption text-on-primary-container uppercase">Target: 100%</span>
+</div>
+</div>
+<p class="font-body-md text-slate-500">You're on track! Complete 2 more leadership activities to hit your milestone.</p>
+</div>
+<div class="md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-primary-container text-white p-md rounded-xl raised-card relative overflow-hidden flex flex-col justify-between">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-tertiary-fixed text-4xl mb-sm" data-icon="rocket_launch">rocket_launch</span>
+<h3 class="font-h3 text-h2 mb-xs">24</h3>
+<p class="font-label-bold text-on-primary-container">Total Activities</p>
+</div>
+<div class="mt-md flex items-center text-tertiary-fixed gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="text-caption">+4 this month</span>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="rocket_launch">rocket_launch</span>
+</div>
+</div>
+<div class="bg-white p-md rounded-xl raised-card flex flex-col justify-between border-l-4 border-secondary">
+<div>
+<span class="material-symbols-outlined text-secondary text-4xl mb-sm" data-icon="schedule">schedule</span>
+<h3 class="font-h3 text-h2 text-primary mb-xs">156</h3>
+<p class="font-label-bold text-slate-500 uppercase">Service Hours</p>
+</div>
+<div class="mt-md h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[80%] rounded-full"></div>
+</div>
+<p class="mt-sm text-caption text-slate-400">80% of semester goal reached</p>
+</div>
+<div class="bg-white p-md rounded-xl raised-card flex flex-col justify-between border-l-4 border-tertiary-fixed-dim">
+<div>
+<span class="material-symbols-outlined text-cyan-500 text-4xl mb-sm" data-icon="category">category</span>
+<h3 class="font-h3 text-h2 text-primary mb-xs">8</h3>
+<p class="font-label-bold text-slate-500 uppercase">Skill Domains</p>
+</div>
+<div class="flex flex-wrap gap-2 mt-md">
+<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded uppercase">Tech</span>
+<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded uppercase">Civic</span>
+<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded uppercase">Art</span>
+<span class="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded uppercase">+5 more</span>
+</div>
+</div>
+<div class="bg-gradient-to-br from-indigo-600 to-secondary text-white p-md rounded-xl raised-card flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-4xl mb-2" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<h4 class="font-h3 text-body-lg font-bold mb-1">Badge Earned</h4>
+<p class="text-caption opacity-80 mb-sm">Community Leader Tier 1</p>
+<button class="bg-white/20 hover:bg-white/30 transition-all text-white px-4 py-2 rounded-lg text-caption font-bold">View Badge</button>
+</div>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<div class="lg:col-span-2 bg-white rounded-xl raised-card overflow-hidden">
+<div class="p-md border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-h3 text-h3 text-primary">Recent Experience</h3>
+<button class="text-indigo-600 font-label-bold text-caption hover:underline">View All</button>
+</div>
+<div class="p-md space-y-4">
+<div class="flex items-center gap-4 p-sm hover:bg-slate-50 transition-colors rounded-lg group">
+<div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+<span class="material-symbols-outlined" data-icon="code">code</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-bold text-primary">Hackathon 2024 Participation</h4>
+<p class="text-caption text-slate-500">Technical Skills • Oct 12, 2024</p>
+</div>
+<div class="text-right">
+<span class="text-label-bold text-primary">12 hrs</span>
+<span class="block text-[10px] text-green-600 font-bold uppercase">Verified</span>
+</div>
+</div>
+<div class="flex items-center gap-4 p-sm hover:bg-slate-50 transition-colors rounded-lg group">
+<div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-bold text-primary">Local Food Bank Volunteering</h4>
+<p class="text-caption text-slate-500">Civic Engagement • Oct 08, 2024</p>
+</div>
+<div class="text-right">
+<span class="text-label-bold text-primary">4 hrs</span>
+<span class="block text-[10px] text-green-600 font-bold uppercase">Verified</span>
+</div>
+</div>
+<div class="flex items-center gap-4 p-sm hover:bg-slate-50 transition-colors rounded-lg group">
+<div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-label-bold text-primary">Student Council Meeting</h4>
+<p class="text-caption text-slate-500">Leadership • Oct 05, 2024</p>
+</div>
+<div class="text-right">
+<span class="text-label-bold text-primary">2 hrs</span>
+<span class="block text-[10px] text-slate-400 font-bold uppercase">Pending</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl raised-card flex flex-col">
+<div class="p-md border-b border-slate-100">
+<h3 class="font-h3 text-h3 text-primary">Next Steps</h3>
+</div>
+<div class="p-md flex-grow space-y-md">
+<div class="flex gap-4 items-start">
+<div class="mt-1 h-5 w-5 rounded border-2 border-indigo-200 flex-shrink-0"></div>
+<div>
+<h4 class="font-label-bold text-primary">Upload Semester Journal</h4>
+<p class="text-caption text-slate-500">Reflection is required for 5 activities.</p>
+<button class="mt-2 text-indigo-600 font-bold text-xs flex items-center gap-1 hover:gap-2 transition-all">Upload Now <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span></button>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="mt-1 h-5 w-5 rounded border-2 border-indigo-200 flex-shrink-0"></div>
+<div>
+<h4 class="font-label-bold text-primary">Confirm Ethics Workshop</h4>
+<p class="text-caption text-slate-500">Attended on Oct 1, needs student signature.</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="mt-1 h-5 w-5 rounded border-2 border-indigo-200 flex-shrink-0"></div>
+<div>
+<h4 class="font-label-bold text-primary">Update Career Interests</h4>
+<p class="text-caption text-slate-500">Help us suggest better activities for you.</p>
+</div>
+</div>
+</div>
+<div class="p-md bg-slate-50 rounded-b-xl border-t border-slate-100">
+<div class="bg-primary p-4 rounded-lg flex items-center gap-4">
+<div class="h-10 w-10 bg-tertiary-fixed rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+</div>
+<div>
+<p class="text-white text-[10px] uppercase font-bold tracking-widest">Upcoming Workshop</p>
+<p class="text-tertiary-fixed text-caption font-bold">Resume Building 101</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 full-width mt-auto">
+<div class="max-w-[1280px] mx-auto px-8 py-12 flex flex-col md:flex-row justify-between items-center w-full gap-6">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="text-lg font-bold text-indigo-900 dark:text-white font-h2">EduTrack</span>
+<p class="font-['Space_Grotesk'] text-sm tracking-normal text-slate-500 dark:text-slate-400">© 2024 EduTrack University. Empowering student success.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-['Space_Grotesk'] text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-cyan-300 hover:underline transition-all" href="#">Resources</a>
+<a class="font-['Space_Grotesk'] text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-cyan-300 hover:underline transition-all" href="#">Contact Info</a>
+<a class="font-['Space_Grotesk'] text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-cyan-300 hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="font-['Space_Grotesk'] text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-cyan-300 hover:underline transition-all" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+<button class="fixed bottom-8 right-8 h-14 w-14 bg-secondary-container hover:bg-secondary text-on-secondary-container hover:text-white rounded-full shadow-xl flex items-center justify-center transition-all duration-300 active:scale-95 group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300" data-icon="add">add</span>
+</button>
+</body></html>

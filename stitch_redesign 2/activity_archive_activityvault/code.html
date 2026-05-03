@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#4cd7f6",
+                    "on-tertiary-fixed-variant": "#004e5c",
+                    "primary": "#c7c0f9",
+                    "tertiary": "#4cd7f6",
+                    "on-tertiary": "#003640",
+                    "surface-container": "#1d2022",
+                    "on-tertiary-fixed": "#001f26",
+                    "secondary-container": "#571bc1",
+                    "primary-fixed": "#e4dfff",
+                    "outline": "#928f99",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "on-primary-fixed": "#1a1443",
+                    "surface-container-low": "#191c1e",
+                    "inverse-surface": "#e0e3e5",
+                    "background": "#101415",
+                    "on-secondary": "#3c0091",
+                    "surface-variant": "#323537",
+                    "inverse-primary": "#5e588a",
+                    "surface-bright": "#363a3b",
+                    "secondary-fixed": "#e9ddff",
+                    "on-primary": "#2f2a59",
+                    "on-secondary-container": "#c4abff",
+                    "on-background": "#e0e3e5",
+                    "on-secondary-fixed": "#23005c",
+                    "on-primary-container": "#7e78ad",
+                    "surface-container-lowest": "#0b0f10",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#d0bcff",
+                    "on-primary-fixed-variant": "#464171",
+                    "tertiary-fixed": "#acedff",
+                    "on-tertiary-container": "#008ba2",
+                    "on-error": "#690005",
+                    "outline-variant": "#47464f",
+                    "tertiary-container": "#00171d",
+                    "surface-container-highest": "#323537",
+                    "surface-tint": "#c7c0f9",
+                    "primary-container": "#120b3b",
+                    "surface-dim": "#101415",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "surface-container-high": "#272a2c",
+                    "error-container": "#93000a",
+                    "surface": "#101415",
+                    "inverse-on-surface": "#2d3133",
+                    "on-surface-variant": "#c9c5d0",
+                    "on-surface": "#e0e3e5",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#c7c0f9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "unit": "8px",
+                    "margin-page": "64px",
+                    "card-padding": "24px",
+                    "gutter": "32px"
+            },
+            "fontFamily": {
+                    "label-bold": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"],
+                    "display-xl": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(18, 11, 59, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(76, 215, 246, 0.1);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(76, 215, 246, 0.2);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full border-b border-white/5 bg-slate-950/80 backdrop-blur-xl z-50 shadow-[0_0_20px_rgba(18,11,59,0.5)]">
+<div class="flex justify-between items-center h-16 px-8 max-w-[1440px] mx-auto w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-cyan-400 font-['Space_Grotesk'] tracking-tight">ActivityVault</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-slate-400 hover:text-white transition-colors font-['Space_Grotesk']" href="#">Dashboard</a>
+<a class="text-cyan-400 border-b-2 border-cyan-400 pb-1 font-['Space_Grotesk']" href="#">Activity Log</a>
+<a class="text-slate-400 hover:text-white transition-colors font-['Space_Grotesk']" href="#">Export Center</a>
+<a class="text-slate-400 hover:text-white transition-colors font-['Space_Grotesk']" href="#">Resources</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-cyan-400/50 w-64 transition-all" placeholder="Search archive..." type="text"/>
+</div>
+<button class="p-2 text-slate-400 hover:bg-white/5 rounded-full transition-all duration-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-400 hover:bg-white/5 rounded-full transition-all duration-300">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full border border-cyan-400/30 flex items-center justify-center bg-white/5 text-cyan-400/70 overflow-hidden">
+<span class="material-symbols-outlined text-2xl">account_circle</span>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r border-cyan-400/10 bg-slate-950/40 backdrop-blur-2xl flex flex-col py-6 gap-2 z-40 shadow-[10px_0_30px_rgba(0,0,0,0.3)]">
+<div class="px-6 mb-8">
+<h2 class="text-white font-headline-md text-lg font-['Space_Grotesk'] font-medium">Academic Vault</h2>
+<p class="text-slate-500 text-xs font-['Space_Grotesk']">Fall Term 2024</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:translate-x-1 transition-all ease-out duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['Space_Grotesk'] font-medium">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-purple-600/20 text-cyan-400 border-r-4 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)] rounded-lg" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-['Space_Grotesk'] font-medium">Experiences</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:translate-x-1 transition-all ease-out duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">military_tech</span>
+<span class="font-['Space_Grotesk'] font-medium">Milestones</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:translate-x-1 transition-all ease-out duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-['Space_Grotesk'] font-medium">Analytics</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full bg-secondary-container text-white py-3 rounded-xl font-label-bold flex items-center justify-center gap-2 hover:bg-on-secondary-fixed-variant transition-all scale-100 active:scale-95 glow-cyan">
+<span class="material-symbols-outlined">add</span>
+                Log Activity
+            </button>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 transition-colors" href="#">
+<span class="material-symbols-outlined">help_center</span>
+<span class="font-['Space_Grotesk'] font-medium">Help Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-24 px-8 pb-12 max-w-[1440px]">
+<!-- Header & Filters Section -->
+<section class="mb-10">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<h1 class="text-white font-headline-lg text-display-xl mb-2">Activity Archive</h1>
+<p class="text-on-surface-variant max-w-2xl">A comprehensive historical record of your academic milestones, research projects, and professional contributions.</p>
+</div>
+<div class="flex gap-3">
+<div class="glass-card px-4 py-2 rounded-xl flex items-center gap-3">
+<span class="text-cyan-400 text-xs font-label-bold uppercase">Total Records</span>
+<span class="text-white text-2xl font-bold">142</span>
+</div>
+</div>
+</div>
+<!-- Advanced Filters -->
+<div class="flex flex-wrap items-center gap-4 p-4 glass-card rounded-2xl border-white/5">
+<div class="flex items-center gap-2 text-slate-400 mr-2">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="text-sm font-label-bold">Filter By</span>
+</div>
+<select class="bg-surface-container border-none text-on-surface text-sm rounded-lg px-4 py-2 focus:ring-1 focus:ring-cyan-400 transition-all cursor-pointer">
+<option>All Categories</option>
+<option>Research</option>
+<option>Leadership</option>
+<option>Internships</option>
+<option>Community</option>
+</select>
+<select class="bg-surface-container border-none text-on-surface text-sm rounded-lg px-4 py-2 focus:ring-1 focus:ring-cyan-400 transition-all cursor-pointer">
+<option>Academic Year 2023-24</option>
+<option>Academic Year 2022-23</option>
+<option>Pre-University</option>
+</select>
+<select class="bg-surface-container border-none text-on-surface text-sm rounded-lg px-4 py-2 focus:ring-1 focus:ring-cyan-400 transition-all cursor-pointer">
+<option>All Semesters</option>
+<option>Fall</option>
+<option>Spring</option>
+<option>Summer</option>
+</select>
+<div class="ml-auto flex items-center gap-2">
+<button class="p-2 text-cyan-400 bg-cyan-400/10 rounded-lg">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="p-2 text-slate-500 hover:text-cyan-400 transition-colors">
+<span class="material-symbols-outlined">view_list</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Activity Grid -->
+<section class="grid grid-cols-1 xl:grid-cols-2 gap-gutter">
+<!-- Activity Card 1 -->
+<div class="glass-card rounded-3xl overflow-hidden flex flex-col group hover:border-cyan-400/30 transition-all duration-500">
+<div class="p-card-padding">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-secondary-container">science</span>
+</div>
+<div>
+<h3 class="text-white font-headline-md text-xl">Neuroscience Research Assistant</h3>
+<p class="text-slate-400 text-sm">Cognitive Systems Lab • Fall 2023</p>
+</div>
+</div>
+<span class="bg-tertiary-fixed-dim text-on-tertiary-fixed px-3 py-1 rounded-full text-xs font-label-bold uppercase">Research</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">
+                        Conducted high-resolution EEG data collection for a study on neural correlates of spatial navigation in virtual environments. Managed a database of 50+ participants and automated data preprocessing workflows using Python.
+                    </p>
+<!-- Output Builder -->
+<div class="bg-black/30 border border-white/5 rounded-2xl p-4">
+<div class="flex items-center justify-between mb-3">
+<span class="text-cyan-400 text-[10px] font-label-bold tracking-widest uppercase">Output Builder</span>
+<div class="flex gap-2">
+<button class="text-slate-400 hover:text-cyan-400 text-xs flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy Bullet
+                                </button>
+<button class="text-slate-400 hover:text-purple-400 text-xs flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">auto_awesome</span> Optimize AI
+                                </button>
+</div>
+</div>
+<div class="text-slate-200 text-sm italic border-l-2 border-purple-500 pl-4 py-1">
+                            "Automated EEG data preprocessing using Python, increasing lab efficiency by 40% and ensuring data integrity across a cohort of 50+ participants."
+                        </div>
+</div>
+</div>
+<div class="mt-auto px-card-padding py-4 border-t border-white/5 flex justify-between items-center bg-white/5">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full bg-slate-700 border border-slate-900 flex items-center justify-center text-[10px] text-white">JD</div>
+<div class="w-6 h-6 rounded-full bg-cyan-600 border border-slate-900 flex items-center justify-center text-[10px] text-white">MK</div>
+</div>
+<button class="text-cyan-400 font-label-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        VIEW FULL DETAILS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Activity Card 2 -->
+<div class="glass-card rounded-3xl overflow-hidden flex flex-col group hover:border-cyan-400/30 transition-all duration-500">
+<div class="p-card-padding">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">groups</span>
+</div>
+<div>
+<h3 class="text-white font-headline-md text-xl">Hackathon Lead Organizer</h3>
+<p class="text-slate-400 text-sm">Tech Innovators Society • Spring 2024</p>
+</div>
+</div>
+<span class="bg-secondary text-on-secondary px-3 py-1 rounded-full text-xs font-label-bold uppercase">Leadership</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">
+                        Orchestrated "VaultHack 2024," a 48-hour development competition with 300+ attendees. Secured $15k in corporate sponsorships and coordinated logistics for 15 industry judges and 4 technical workshops.
+                    </p>
+<!-- Output Builder -->
+<div class="bg-black/30 border border-white/5 rounded-2xl p-4">
+<div class="flex items-center justify-between mb-3">
+<span class="text-cyan-400 text-[10px] font-label-bold tracking-widest uppercase">Output Builder</span>
+<div class="flex gap-2">
+<button class="text-slate-400 hover:text-cyan-400 text-xs flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy Bullet
+                                </button>
+<button class="text-slate-400 hover:text-purple-400 text-xs flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">auto_awesome</span> Optimize AI
+                                </button>
+</div>
+</div>
+<div class="text-slate-200 text-sm italic border-l-2 border-purple-500 pl-4 py-1">
+                            "Spearheaded sponsorship initiatives for 'VaultHack 2024,' raising $15,000 and scaling event capacity by 50% compared to previous years."
+                        </div>
+</div>
+</div>
+<div class="mt-auto px-card-padding py-4 border-t border-white/5 flex justify-between items-center bg-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm">attach_file</span>
+<span class="text-slate-500 text-xs">3 Deliverables attached</span>
+</div>
+<button class="text-cyan-400 font-label-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        VIEW FULL DETAILS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Activity Card 3 -->
+<div class="glass-card rounded-3xl overflow-hidden flex flex-col group hover:border-cyan-400/30 transition-all duration-500">
+<div class="p-card-padding">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-2xl bg-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-container">laptop_mac</span>
+</div>
+<div>
+<h3 class="text-white font-headline-md text-xl">Software Engineer Intern</h3>
+<p class="text-slate-400 text-sm">CloudScale Systems • Summer 2023</p>
+</div>
+</div>
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full text-xs font-label-bold uppercase">Internship</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">
+                        Developed internal dashboard components using React and Tailwind CSS. Integrated RESTful APIs and optimized SQL queries, resulting in a 20% reduction in dashboard load times for the dev-ops team.
+                    </p>
+<!-- Output Builder -->
+<div class="bg-black/30 border border-white/5 rounded-2xl p-4">
+<div class="flex items-center justify-between mb-3">
+<span class="text-cyan-400 text-[10px] font-label-bold tracking-widest uppercase">Output Builder</span>
+<div class="flex gap-2">
+<button class="text-slate-400 hover:text-cyan-400 text-xs flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy Bullet
+                                </button>
+<button class="text-slate-400 hover:text-purple-400 text-xs flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-sm">auto_awesome</span> Optimize AI
+                                </button>
+</div>
+</div>
+<div class="text-slate-200 text-sm italic border-l-2 border-purple-500 pl-4 py-1">
+                            "Reduced system latency by 20% by optimizing React state management and backend SQL queries for a high-traffic internal monitoring dashboard."
+                        </div>
+</div>
+</div>
+<div class="mt-auto px-card-padding py-4 border-t border-white/5 flex justify-between items-center bg-white/5">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-slate-300 text-xs font-bold">Featured Activity</span>
+</div>
+<button class="text-cyan-400 font-label-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        VIEW FULL DETAILS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Empty State / Add New Placeholder -->
+<div class="border-2 border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center p-card-padding text-center group hover:border-cyan-400/30 transition-all cursor-pointer bg-white/[0.02]">
+<div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 group-hover:bg-cyan-400/10 transition-all">
+<span class="material-symbols-outlined text-slate-500 group-hover:text-cyan-400 text-3xl">post_add</span>
+</div>
+<h4 class="text-slate-300 font-headline-md text-lg">Record a New Experience</h4>
+<p class="text-slate-500 text-sm max-w-[250px] mt-2">Document your latest achievement to keep your professional archive up to date.</p>
+<button class="mt-6 px-6 py-2 border border-cyan-400/30 text-cyan-400 rounded-full font-label-bold hover:bg-cyan-400/10 transition-all">
+                    START ENTRY
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="ml-64 w-[calc(100%-256px)] border-t border-white/5 bg-slate-950">
+<div class="max-w-[1440px] mx-auto px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="text-lg font-bold text-slate-300 font-['Space_Grotesk']">ActivityVault</span>
+<p class="text-slate-500 text-sm font-['Space_Grotesk']">© 2024 ActivityVault Academic Systems. All rights reserved.</p>
+</div>
+<nav class="flex gap-8">
+<a class="text-slate-500 hover:text-cyan-300 transition-colors font-['Space_Grotesk'] text-sm" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-cyan-300 transition-colors font-['Space_Grotesk'] text-sm" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-cyan-300 transition-colors font-['Space_Grotesk'] text-sm" href="#">Documentation</a>
+<a class="text-slate-500 hover:text-cyan-300 transition-colors font-['Space_Grotesk'] text-sm" href="#">API Status</a>
+</nav>
+<div class="flex gap-4">
+<button class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+</footer>
+</body></html>
