@@ -22,10 +22,10 @@
         </a>
 
         <div class="nav-links">
-          <a class="active" href="#dashboard">Dashboard</a>
-          <a href="#add-activity">Add Activity</a>
-          <a href="#archive">Archive</a>
-          <a href="#export-center">Export Center</a>
+          <a class="active" href="#dashboard" data-nav-icon="▣">Room</a>
+          <a href="#add-activity" data-nav-icon="+">Log</a>
+          <a href="#archive" data-nav-icon="◇">Vault</a>
+          <a href="#export-center" data-nav-icon="↧">Settings</a>
         </div>
 
         <div class="nav-avatar" aria-hidden="true">AV</div>
@@ -35,34 +35,95 @@
     <main>
       <section class="app-page app-light-page dashboard-page active-page" id="dashboard">
         <div class="page-heading">
-          <p class="eyebrow">Student portfolio builder</p>
-          <h1>Dashboard</h1>
+          <p class="eyebrow">My vault room</p>
+          <h1>Collect your real-life wins in one cozy room.</h1>
           <p>
-            Build your student story from everyday experiences for scholarships, resumes, transfer
-            applications, and personal portfolios.
+            Record clubs, service, projects, work, certificates, awards, and learning moments as
+            soft collectible objects you can organize, remember, and use later.
           </p>
         </div>
+
+        <section class="vault-room-card card" aria-labelledby="vaultRoomTitle">
+          <div class="card-header">
+            <div>
+              <p class="eyebrow">Activity room</p>
+              <h2 id="vaultRoomTitle">My Vault Room</h2>
+            </div>
+            <div class="room-actions">
+              <button class="secondary-action" id="editRoomButton" type="button">Edit Room</button>
+              <button class="secondary-action" id="resetRoomLayout" type="button">Reset Layout</button>
+              <a class="primary-link" href="#add-activity">Log Activity</a>
+            </div>
+          </div>
+
+          <div class="vault-room-scene" aria-live="polite">
+            <div class="room-wall"></div>
+
+            <div class="room-floor"></div>
+
+            <img class="room-furniture room-shelf" src="assets/shelf.png" alt="" aria-hidden="true" />
+            <img class="room-furniture room-bulletin" src="assets/dashboard.png" alt="" aria-hidden="true" />
+            <img class="room-furniture room-wall-shelf" src="assets/wall_shelf.png" alt="" aria-hidden="true" />
+            <img class="room-furniture room-desk" src="assets/desk.png" alt="" aria-hidden="true" />
+
+            <div class="vault-room-objects" id="vaultRoomObjects"></div>
+
+            <div class="vault-room-empty" id="vaultRoomEmpty">
+              <strong>This room is ready for your first object.</strong>
+              <span>Log your first activity to fill your vault room.</span>
+            </div>
+          </div>
+
+          <section class="room-edit-panel" id="roomEditPanel" hidden>
+            <div>
+              <p class="eyebrow">Selected object</p>
+              <h3 id="roomEditTitle">Choose an object</h3>
+            </div>
+
+            <label>
+              Asset
+              <select id="roomAssetSelect"></select>
+            </label>
+
+            <button class="secondary-action" id="resetSelectedObject" type="button">Reset Object</button>
+          </section>
+
+          <section class="room-archive-card" aria-labelledby="roomArchiveTitle">
+            <div class="room-archive-header">
+              <div>
+                <p class="eyebrow">Room archive</p>
+                <h3 id="roomArchiveTitle">Hidden Room Objects</h3>
+              </div>
+              <p>This only hides collectibles from your room. Activity records stay saved in the Vault.</p>
+            </div>
+            <div class="empty-state compact" id="roomArchiveEmpty">
+              <h3>No hidden objects.</h3>
+              <p>Objects you remove from the room will appear here so you can restore them later.</p>
+            </div>
+            <div class="room-archive-list" id="roomArchiveList"></div>
+          </section>
+        </section>
 
         <div class="dashboard-grid">
           <article class="readiness-hero card">
             <div class="readiness-ring" id="portfolioRing" aria-label="Portfolio readiness circular progress">
               <div>
                 <strong id="portfolioReadiness">0%</strong>
-                <span>Portfolio Readiness</span>
+                <span>Vault Ready</span>
               </div>
             </div>
-            <p id="readinessSummary">Add activities to begin measuring your portfolio readiness.</p>
+            <p id="readinessSummary">Add activities to begin filling your vault room.</p>
             <div class="readiness-check-block">
-              <span class="control-label">Readiness Checklist</span>
+              <span class="control-label">Room Checklist</span>
               <ul class="readiness-checklist" id="readinessChecklist"></ul>
             </div>
           </article>
 
           <section class="stat-grid" aria-label="Activity summary">
             <article class="stat-card dark-card">
-              <span class="stat-label">Total Activities</span>
+              <span class="stat-label">Collected</span>
               <strong id="totalActivities">0</strong>
-              <small>Saved experiences</small>
+              <small>Activity objects</small>
             </article>
 
             <article class="stat-card">
@@ -73,32 +134,32 @@
             </article>
 
             <article class="stat-card">
-              <span class="stat-label">Categories Used</span>
+              <span class="stat-label">Kinds Collected</span>
               <strong id="categoriesUsed">0</strong>
               <div class="category-mini-list" id="categoryMiniList"></div>
             </article>
 
             <article class="stat-card badge-card">
-              <span class="stat-label">Portfolio Summary</span>
+              <span class="stat-label">Collection Mood</span>
               <strong id="portfolioBadge">Starter</strong>
-              <small id="portfolioBadgeText">Add activities to unlock a stronger profile.</small>
+              <small id="portfolioBadgeText">Add activities to unlock a cozier vault room.</small>
             </article>
           </section>
 
           <section class="recent-card card">
             <div class="card-header">
               <div>
-                <p class="eyebrow">Latest entries</p>
-                <h2>Recent Experience</h2>
+                <p class="eyebrow">Collection shelf</p>
+                <h2>Activity Room</h2>
               </div>
-              <a class="text-action" href="#archive">View Archive</a>
+              <a class="text-action" href="#archive">Open Vault</a>
             </div>
             <div class="recent-list" id="recentExperienceList"></div>
           </section>
 
           <aside class="next-card card">
-            <p class="eyebrow">Guidance</p>
-            <h2>Next Steps</h2>
+            <p class="eyebrow">Gentle nudges</p>
+            <h2>Next Objects</h2>
             <ul id="readinessNextSteps"></ul>
           </aside>
         </div>
@@ -106,11 +167,10 @@
 
       <section class="app-page app-light-page add-activity-page form-page" id="add-activity">
         <div class="page-heading">
-          <p class="eyebrow">New entry</p>
-          <h1>New Experience</h1>
+          <p class="eyebrow">Add a collectible</p>
+          <h1>Log an Activity</h1>
           <p>
-            Document activities for scholarships, resumes, transfer applications, and personal
-            portfolios.
+            Save what you did today so your Activity Room fills with useful little memories.
           </p>
         </div>
 
@@ -118,7 +178,7 @@
           <form class="activity-form" id="activityForm">
             <section class="form-card">
               <div class="section-heading">
-                <p class="eyebrow">Core details</p>
+                <p class="eyebrow">Tiny label</p>
                 <h2>Activity Details</h2>
               </div>
 
@@ -137,13 +197,21 @@
                   Category
                   <select id="category" name="category" required>
                     <option value="">Select category</option>
-                    <option>Volunteering</option>
+                    <option>Study / Class</option>
+                    <option>Homework / Assignment</option>
+                    <option>Exam / Test Prep</option>
+                    <option>Reading / Research</option>
+                    <option>Work / Part-time Job</option>
+                    <option>Internship</option>
+                    <option>Club</option>
                     <option>Leadership</option>
-                    <option>Work</option>
+                    <option>Volunteering</option>
                     <option>Project</option>
                     <option>Competition</option>
                     <option>Certificate</option>
-                    <option>Academic</option>
+                    <option>Award / Achievement</option>
+                    <option>Portfolio</option>
+                    <option>Personal Learning</option>
                     <option>Other</option>
                   </select>
                 </label>
@@ -155,14 +223,14 @@
               </div>
 
               <label>
-                Description
-                <textarea id="description" name="description" rows="4" placeholder="What did you do?"></textarea>
+                What happened?
+                <textarea id="description" name="description" rows="4" placeholder="What did you do, make, lead, learn, or help with?"></textarea>
               </label>
             </section>
 
             <section class="form-card">
               <div class="section-heading">
-                <p class="eyebrow">Timeline</p>
+                <p class="eyebrow">Time spent</p>
                 <h2>Dates & Hours</h2>
               </div>
 
@@ -193,7 +261,7 @@
 
             <section class="form-card">
               <div class="section-heading">
-                <p class="eyebrow">Reflection</p>
+                <p class="eyebrow">Memory notes</p>
                 <h2>Impact & Skills</h2>
               </div>
 
@@ -215,13 +283,13 @@
 
               <label>
                 Impact / Result
-                <textarea id="impact" name="impact" rows="3" placeholder="What changed because of your work?"></textarea>
+                <textarea id="impact" name="impact" rows="3" placeholder="Who did it help? What changed? What are you proud of?"></textarea>
               </label>
             </section>
 
             <section class="form-card">
               <div class="section-heading">
-                <p class="eyebrow">Proof materials</p>
+                <p class="eyebrow">Sticker proof</p>
                 <h2>Evidence / Proof</h2>
               </div>
 
@@ -272,24 +340,24 @@
                 ></textarea>
               </label>
 
-              <button class="primary-action" type="submit">Save Activity</button>
+              <button class="primary-action" type="submit">Add to Room</button>
             </section>
           </form>
 
           <aside class="form-sidebar">
             <section class="tips-card">
-              <p class="eyebrow">Pro Tips</p>
-              <h2>Make entries scholarship-ready.</h2>
+              <p class="eyebrow">Cozy tips</p>
+              <h2>Make future-you happy.</h2>
               <ul>
-                <li>Use action verbs and specific results.</li>
+                <li>Write what you actually did in your own words.</li>
                 <li>Add weekly hours and dates when you can measure commitment.</li>
-                <li>Write impact as a change you helped create.</li>
+                <li>Save proof now before it gets lost.</li>
               </ul>
             </section>
 
             <section class="help-card">
-              <h3>Need Help?</h3>
-              <p>Start with what you did, who it helped, and what skill you practiced.</p>
+              <h3>Stuck?</h3>
+              <p>Start with one sentence: I helped, made, led, learned, or practiced...</p>
             </section>
           </aside>
         </div>
@@ -299,14 +367,14 @@
         <div class="archive-layout">
           <aside class="archive-sidebar">
             <div class="archive-controls" aria-label="Archive controls">
-              <h2>Refine Archive</h2>
+              <h2>Find Objects</h2>
 
               <label class="archive-search">
-                Search Activities
+                Search Vault
                 <input
                   id="archiveSearch"
                   type="search"
-                  placeholder="Keyword, role, or skill..."
+                placeholder="Title, club, role, or skill..."
                   autocomplete="off"
                 />
               </label>
@@ -315,13 +383,21 @@
                 <span class="control-label">Category</span>
                 <div class="filter-group" aria-label="Filter by category">
                   <button class="filter-button active" type="button" data-category="All">All</button>
-                  <button class="filter-button" type="button" data-category="Volunteering">Volunteering</button>
+                  <button class="filter-button" type="button" data-category="Study / Class">Study / Class</button>
+                  <button class="filter-button" type="button" data-category="Homework / Assignment">Homework / Assignment</button>
+                  <button class="filter-button" type="button" data-category="Exam / Test Prep">Exam / Test Prep</button>
+                  <button class="filter-button" type="button" data-category="Reading / Research">Reading / Research</button>
+                  <button class="filter-button" type="button" data-category="Work / Part-time Job">Work / Part-time Job</button>
+                  <button class="filter-button" type="button" data-category="Internship">Internship</button>
+                  <button class="filter-button" type="button" data-category="Club">Club</button>
                   <button class="filter-button" type="button" data-category="Leadership">Leadership</button>
-                  <button class="filter-button" type="button" data-category="Work">Work</button>
+                  <button class="filter-button" type="button" data-category="Volunteering">Volunteering</button>
                   <button class="filter-button" type="button" data-category="Project">Project</button>
                   <button class="filter-button" type="button" data-category="Competition">Competition</button>
                   <button class="filter-button" type="button" data-category="Certificate">Certificate</button>
-                  <button class="filter-button" type="button" data-category="Academic">Academic</button>
+                  <button class="filter-button" type="button" data-category="Award / Achievement">Award / Achievement</button>
+                  <button class="filter-button" type="button" data-category="Portfolio">Portfolio</button>
+                  <button class="filter-button" type="button" data-category="Personal Learning">Personal Learning</button>
                   <button class="filter-button" type="button" data-category="Other">Other</button>
                 </div>
               </div>
@@ -340,16 +416,16 @@
           <section class="archive-main">
             <div class="archive-title-row">
               <div>
-                <p class="eyebrow">Saved work</p>
-                <h1>Activity Archive</h1>
-                <p>Your journey of growth, service, leadership, and achievement.</p>
+                <p class="eyebrow">Practical archive</p>
+                <h1>Activity Vault</h1>
+                <p>A clean list of your real experiences, proof, hours, skills, and reflections.</p>
               </div>
               <a class="primary-link" href="#add-activity">Log Activity</a>
             </div>
 
             <div class="empty-state" id="emptyState">
-              <h3>Your archive is ready.</h3>
-              <p>Add your first activity to start building a portfolio you can reuse anywhere.</p>
+              <h3>Your vault is waiting.</h3>
+              <p>Add your first activity and it will appear as a cute room object and a useful record.</p>
             </div>
 
             <div class="empty-state" id="noMatchState" hidden>
@@ -364,11 +440,11 @@
 
       <section class="app-page app-dark-page export-center-page export-page" id="export-center">
         <div class="page-heading">
-          <p class="eyebrow">Application-ready documents</p>
-          <h1>Export Center</h1>
+          <p class="eyebrow">Profile backup</p>
+          <h1>Backup & Export</h1>
           <p>
-            Select saved activities and turn them into polished summaries for scholarships,
-            resumes, transfer applications, personal portfolios, and reports.
+            Keep this low-key: download or copy your saved entries when you want a backup outside
+            your vault room.
           </p>
         </div>
 
@@ -377,27 +453,27 @@
             <div class="export-panel-header">
               <div>
                 <p class="export-step">1</p>
-                <h2>Purpose & Format</h2>
-                <p>Choose the document style you want to build.</p>
+                <h2>Backup Format</h2>
+                <p>Choose a simple export style for your saved entries.</p>
               </div>
             </div>
 
             <label class="export-purpose">
-              Export Purpose
+              Backup Type
               <select id="exportPurpose">
-                <option value="scholarship">Scholarship Application Summary</option>
-                <option value="resume">Resume Experience Section</option>
-                <option value="transfer">Transfer Application Activity List</option>
-                <option value="portfolio">Personal Portfolio Summary</option>
-                <option value="report">Club / Volunteer Report</option>
+                <option value="scholarship">Complete Activity Backup</option>
+                <option value="resume">Resume Notes Backup</option>
+                <option value="transfer">Application List Backup</option>
+                <option value="portfolio">Portfolio Notes Backup</option>
+                <option value="report">Hours & Proof Backup</option>
               </select>
             </label>
 
             <div class="export-panel-header">
               <div>
                 <p class="export-step">2</p>
-                <h2>Activities</h2>
-                <p>Choose one or more saved entries to include.</p>
+                <h2>Saved Objects</h2>
+                <p>Choose one or more room objects to include.</p>
               </div>
               <div class="selection-actions">
                 <button class="secondary-action" id="selectAllActivities" type="button">Select All</button>
@@ -406,14 +482,14 @@
             </div>
 
             <div class="empty-state compact" id="exportNoActivities">
-              <h3>Add activities first before generating an export document.</h3>
+              <h3>Add activities first before creating a backup.</h3>
             </div>
 
             <div class="export-selection-list" id="exportActivityList"></div>
 
-            <button class="primary-action" id="generateDocument" type="button">Generate Document</button>
+            <button class="primary-action" id="generateDocument" type="button">Create Backup</button>
             <p class="export-warning" id="exportSelectionWarning" hidden>
-              Select at least one activity to generate a document.
+              Select at least one activity to create a backup.
             </p>
           </aside>
 
@@ -424,21 +500,81 @@
                 <h2 id="documentFileName">ActivityVault_Export.txt</h2>
               </div>
               <div class="document-actions">
-                <button class="secondary-action" id="copyDocument" type="button">Copy Document</button>
-                <button class="secondary-action" id="printDocument" type="button">Print / Save as PDF</button>
+                <button class="secondary-action" id="copyDocument" type="button">Copy Backup</button>
+                <button class="secondary-action" id="printDocument" type="button">Print / Save</button>
                 <button class="secondary-action" id="downloadDocument" type="button">Download .txt</button>
               </div>
             </div>
 
             <article class="document-preview" id="documentPreview">
               <p class="document-placeholder">
-                Select activities, choose an export purpose, and generate a document.
+                Select activities, choose a backup type, and create an export.
               </p>
             </article>
           </section>
         </div>
       </section>
     </main>
+
+    <div class="ai-modal" id="aiAssistantModal" hidden>
+      <div class="ai-modal-backdrop" id="aiAssistantBackdrop"></div>
+      <section
+        class="ai-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="aiAssistantTitle"
+      >
+        <div class="ai-modal-header">
+          <div>
+            <p class="eyebrow">Template-based writing support</p>
+            <h2 id="aiAssistantTitle">Writing Assistant</h2>
+            <p>Optional template helper for polishing a saved activity when you want a little writing support.</p>
+          </div>
+          <button class="modal-close-button" id="closeAiAssistant" type="button" aria-label="Close Writing Assistant">
+            ×
+          </button>
+        </div>
+
+        <div class="ai-purpose-tabs" id="aiPurposeTabs" role="tablist" aria-label="Writing purpose">
+          <button class="active" type="button" data-purpose="resume">Resume</button>
+          <button type="button" data-purpose="scholarship">Scholarship</button>
+          <button type="button" data-purpose="transfer">Transfer</button>
+          <button type="button" data-purpose="portfolio">Portfolio</button>
+        </div>
+
+        <div class="ai-comparison-layout">
+          <article class="ai-context-card">
+            <h3>Activity Context</h3>
+            <div id="aiOriginalContext"></div>
+          </article>
+
+          <article class="ai-draft-card">
+            <div class="ai-draft-header">
+              <h3>Improved Draft</h3>
+              <div class="ai-draft-meta">
+                <span id="aiDraftPurposeLabel">Resume</span>
+                <span class="ai-status-pill" id="aiStatusPill">Template fallback</span>
+                <button class="ai-retry-button" id="retryAiDraft" type="button" hidden>Retry AI</button>
+              </div>
+            </div>
+            <p class="ai-error-message" id="aiErrorMessage" hidden></p>
+            <div id="aiImprovedDraft"></div>
+          </article>
+        </div>
+
+        <article class="ai-questions-card">
+          <h3>Missing Details</h3>
+          <ul id="aiMissingQuestions"></ul>
+        </article>
+
+        <div class="ai-modal-actions">
+          <button class="secondary-action" id="copyAiDraft" type="button">Copy improved text</button>
+          <button class="secondary-action" id="replaceDescription" type="button">Replace original description</button>
+          <button class="secondary-action" id="replaceImpact" type="button">Replace original impact/result</button>
+          <button class="primary-action" id="saveAiDraft" type="button">Save as Draft</button>
+        </div>
+      </section>
+    </div>
 
     <script src="app.js"></script>
   </body>
