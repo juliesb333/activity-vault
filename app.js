@@ -1743,8 +1743,14 @@ function renderDocumentHTML(text) {
 
   return lines
     .map((line) => {
-      if (!line.trim()) {
+      const trimmedLine = line.trim();
+
+      if (!trimmedLine) {
         return "";
+      }
+
+      if (trimmedLine === "---") {
+        return `<hr class="document-activity-divider" />`;
       }
 
       if (line.startsWith("# ")) {
@@ -1772,8 +1778,15 @@ function addEvidenceLine(lines, activity) {
   }
 }
 
+function addActivityDivider(lines, index, total) {
+  if (index < total - 1) {
+    lines.push("---", "");
+  }
+}
+
 function buildScholarshipDocument(selectedActivities) {
   const groups = groupActivitiesByCategory(selectedActivities);
+  let activityIndex = 0;
   const lines = [
     "# Student Activity Summary",
     "",
@@ -1796,7 +1809,8 @@ function buildScholarshipDocument(selectedActivities) {
         `Skills Demonstrated: ${formatSkills(activity.skills, "Not specified")}`
       );
       addEvidenceLine(lines, activity);
-      lines.push("");
+      addActivityDivider(lines, activityIndex, selectedActivities.length);
+      activityIndex += 1;
     });
   });
 
@@ -1811,7 +1825,7 @@ function buildScholarshipDocument(selectedActivities) {
 function buildResumeDocument(selectedActivities) {
   const lines = ["# Resume Experience Draft", ""];
 
-  selectedActivities.forEach((activity) => {
+  selectedActivities.forEach((activity, index) => {
     const heading = `${activity.role || activity.title || "Activity Participant"} — ${activity.organization || "Organization not added"}`;
     const output = getOutputText(activity);
     const evidence = getEvidence(activity);
@@ -1826,7 +1840,7 @@ function buildResumeDocument(selectedActivities) {
       lines.push(`- Project link: ${evidence.url}`);
     }
 
-    lines.push("");
+    addActivityDivider(lines, index, selectedActivities.length);
   });
 
   return lines.join("\n");
@@ -1834,6 +1848,7 @@ function buildResumeDocument(selectedActivities) {
 
 function buildTransferDocument(selectedActivities) {
   const groups = groupActivitiesByCategory(selectedActivities);
+  let activityIndex = 0;
   const lines = [
     "# Transfer Application Activity List",
     "",
@@ -1848,6 +1863,8 @@ function buildTransferDocument(selectedActivities) {
         `- ${activity.title || "Untitled Activity"} at ${activity.organization || "organization not added"} (${activity.role || "Participant"}, ${formatDateRange(activity)}, ${formatWeeklyHours(activity)}, ${formatEstimatedTotalHours(activity)} estimated total). ${getImpactStatement(activity)}`
       );
       addEvidenceLine(lines, activity);
+      addActivityDivider(lines, activityIndex, selectedActivities.length);
+      activityIndex += 1;
     });
     lines.push("");
   });
@@ -1863,7 +1880,7 @@ function buildPortfolioDocument(selectedActivities) {
     "",
   ];
 
-  selectedActivities.forEach((activity) => {
+  selectedActivities.forEach((activity, index) => {
     lines.push(
       `## ${activity.title || "Untitled Activity"}`,
       `Category: ${activity.category || "Other"}`,
@@ -1876,7 +1893,7 @@ function buildPortfolioDocument(selectedActivities) {
       `Growth Reflection: This experience helped build confidence, responsibility, and stronger readiness for future academic and professional opportunities.`,
     );
     addEvidenceLine(lines, activity);
-    lines.push("");
+    addActivityDivider(lines, index, selectedActivities.length);
   });
 
   return lines.join("\n");
@@ -1900,11 +1917,12 @@ function buildReportDocument(selectedActivities) {
     "## Activity Breakdown",
   ];
 
-  selectedActivities.forEach((activity) => {
+  selectedActivities.forEach((activity, index) => {
     lines.push(
       `- ${activity.title || "Untitled Activity"} (${activity.category || "Other"}): ${formatWeeklyHours(activity)}, ${formatEstimatedTotalHours(activity)} estimated total with ${activity.organization || "organization not added"}. ${getImpactStatement(activity)}`
     );
     addEvidenceLine(lines, activity);
+    addActivityDivider(lines, index, selectedActivities.length);
   });
 
   lines.push(
@@ -2070,11 +2088,6 @@ function renderActivities() {
           </div>
 
           ${renderEvidenceSection(activity)}
-          ${renderSavedWriting(activity)}
-          <details class="writing-tools-details">
-            <summary>Optional writing drafts</summary>
-            ${renderOutputBuilder(activity)}
-          </details>
         </article>
       `
     )
