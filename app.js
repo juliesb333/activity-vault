@@ -59,7 +59,6 @@ const retryAiDraft = document.querySelector("#retryAiDraft");
 const copyAiDraft = document.querySelector("#copyAiDraft");
 const replaceDescription = document.querySelector("#replaceDescription");
 const replaceImpact = document.querySelector("#replaceImpact");
-const saveAiDraft = document.querySelector("#saveAiDraft");
 const editRoomButton = document.querySelector("#editRoomButton");
 const resetRoomLayout = document.querySelector("#resetRoomLayout");
 const roomEditPanel = document.querySelector("#roomEditPanel");
@@ -1198,7 +1197,7 @@ function renderAiError(error) {
 }
 
 function setAiBusyState(isBusy) {
-  [copyAiDraft, replaceDescription, replaceImpact, saveAiDraft, retryAiDraft].forEach((button) => {
+  [copyAiDraft, replaceDescription, replaceImpact, retryAiDraft].forEach((button) => {
     button.disabled = isBusy && button !== retryAiDraft;
   });
 }
@@ -2676,15 +2675,6 @@ replaceDescription.addEventListener("click", () => {
 replaceImpact.addEventListener("click", () => {
   updateAiActivity((activity) => {
     activity.impact = activeAiDraft.strongerImpact;
-  });
-});
-
-saveAiDraft.addEventListener("click", () => {
-  updateAiActivity((activity) => {
-    activity.aiDrafts = {
-      ...(activity.aiDrafts || {}),
-      [activeAiPurpose]: activeAiDraft.text,
-    };
   });
 });
 
