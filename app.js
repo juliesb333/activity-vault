@@ -6,6 +6,9 @@ const ROOM_LAYOUT_KEY = "activityVault.roomLayouts";
 const ROOM_OBJECT_MIN_SIZE = 3.2;
 const ROOM_OBJECT_MAX_SIZE = 18;
 const ROOM_OBJECT_DEFAULT_SIZE = 8;
+const ROOM_STAGE_WIDTH = 1400;
+const ROOM_STAGE_HEIGHT = 900;
+const EVIDENCE_FILE_MAX_BYTES = 1024 * 1024;
 
 const form = document.querySelector("#activityForm");
 const activityList = document.querySelector("#activityList");
@@ -36,9 +39,11 @@ const skillsHiddenInput = document.querySelector("#skills");
 const startDateInput = document.querySelector("#startDate");
 const endDateInput = document.querySelector("#endDate");
 const weeklyHoursInput = document.querySelector("#weeklyHours");
+const manualTotalHoursInput = document.querySelector("#manualTotalHours");
 const estimatedTotalHoursInput = document.querySelector("#estimatedTotalHours");
 const estimatedTotalHoursPreview = document.querySelector("#estimatedTotalHoursPreview");
 const hoursEstimateMessage = document.querySelector("#hoursEstimateMessage");
+const evidenceFileInput = document.querySelector("#evidenceFile");
 const aiAssistantModal = document.querySelector("#aiAssistantModal");
 const aiAssistantBackdrop = document.querySelector("#aiAssistantBackdrop");
 const closeAiAssistant = document.querySelector("#closeAiAssistant");
@@ -63,6 +68,8 @@ const roomAssetSelect = document.querySelector("#roomAssetSelect");
 const resetSelectedObject = document.querySelector("#resetSelectedObject");
 const roomArchiveList = document.querySelector("#roomArchiveList");
 const roomArchiveEmpty = document.querySelector("#roomArchiveEmpty");
+const roomScene = document.querySelector(".vault-room-scene");
+const roomStage = document.querySelector(".room-stage");
 
 const SKILL_SUGGESTIONS = [
   "Communication",
@@ -279,6 +286,8 @@ function updateActiveNav() {
   pageSections.forEach((section) => {
     section.classList.toggle("active-page", `#${section.id}` === activeHash);
   });
+
+  requestAnimationFrame(scaleRoomStage);
 }
 
 function createActivityId() {
@@ -403,22 +412,90 @@ function calculateEstimatedHours(startDate, endDate, weeklyHours) {
 }
 
 function getCurrentHoursEstimate() {
-  return calculateEstimatedHours(startDateInput.value, endDateInput.value, weeklyHoursInput.value);
+  const manualTotalHours = manualTotalHoursInput?.value ?? "";
+
+  if (manualTotalHours !== "") {
+    const manualTotalHoursNumber = Number(manualTotalHours);
+
+    if (!Number.isFinite(manualTotalHoursNumber) || manualTotalHoursNumber <= 0) {
+      return {
+        status: "invalid",
+        message: "Total hours must be greater than 0.",
+        value: 0,
+        source: "manual",
+      };
+    }
+
+    return {
+      status: "valid",
+      message: "Manual total hours will be saved for this activity.",
+      value: Math.round(manualTotalHoursNumber),
+      source: "manual",
+    };
+  }
+
+  return {
+    ...calculateEstimatedHours(startDateInput.value, endDateInput.value, weeklyHoursInput.value),
+    source: "estimate",
+  };
 }
 
 function updateHoursEstimatePreview() {
   const estimate = getCurrentHoursEstimate();
   estimatedTotalHoursInput.value = estimate.status === "valid" ? String(estimate.value) : "";
   estimatedTotalHoursPreview.textContent =
-    estimate.status === "valid" ? `${estimate.value.toLocaleString()} estimated total hours` : estimate.message;
+    estimate.status === "valid"
+      ? `${estimate.value.toLocaleString()} ${estimate.source === "manual" ? "total hours" : "estimated total hours"}`
+      : estimate.message;
   hoursEstimateMessage.textContent =
-    estimate.status === "valid" ? estimate.message : "Calculated from the activity period and weekly hours.";
+    estimate.status === "valid" ? estimate.message : "Enter weekly hours with dates, or type total hours manually.";
   hoursEstimateMessage.classList.toggle("validation-message", estimate.status === "invalid");
   estimatedTotalHoursPreview.classList.toggle("is-warning", estimate.status === "invalid");
   return estimate;
 }
 
-function getFormActivity() {
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function buildEvidenceObject(formData) {
+  const file = evidenceFileInput?.files?.[0];
+  const evidence = {
+    title: formData.get("evidenceTitle").trim(),
+    type: formData.get("evidenceType"),
+    url: formData.get("evidenceUrl").trim(),
+    notes: formData.get("evidenceNotes").trim(),
+  };
+
+  if (!file) {
+    return evidence;
+  }
+
+  const fileDetails = {
+    fileName: file.name,
+    fileType: file.type || "Unknown file type",
+    fileSize: file.size,
+    fileStored: file.size <= EVIDENCE_FILE_MAX_BYTES,
+  };
+
+  if (fileDetails.fileStored) {
+    fileDetails.fileData = await readFileAsDataURL(file);
+  } else {
+    fileDetails.fileNote = "File was too large for browser storage, so only the file details were saved.";
+  }
+
+  return {
+    ...evidence,
+    ...fileDetails,
+  };
+}
+
+async function getFormActivity() {
   const formData = new FormData(form);
   const hoursEstimate = getCurrentHoursEstimate();
   const weeklyHours = Number(formData.get("weeklyHours")) || 0;
@@ -434,16 +511,13 @@ function getFormActivity() {
     endDate: formData.get("endDate"),
     weeklyHours,
     estimatedTotalHours,
+    totalHours: estimatedTotalHours,
+    hourEntryMode: hoursEstimate.source === "manual" ? "manual" : "estimated",
     hours: estimatedTotalHours,
     description: formData.get("description").trim(),
     skills: [...selectedSkills],
     impact: formData.get("impact").trim(),
-    evidence: {
-      title: formData.get("evidenceTitle").trim(),
-      type: formData.get("evidenceType"),
-      url: formData.get("evidenceUrl").trim(),
-      notes: formData.get("evidenceNotes").trim(),
-    },
+    evidence: await buildEvidenceObject(formData),
     createdAt: new Date().toISOString(),
   };
 }
@@ -530,12 +604,38 @@ function getEvidence(activity) {
     type: String(evidence.type || "").trim(),
     url: String(evidence.url || "").trim(),
     notes: String(evidence.notes || "").trim(),
+    fileName: String(evidence.fileName || "").trim(),
+    fileType: String(evidence.fileType || "").trim(),
+    fileSize: Number(evidence.fileSize) || 0,
+    fileData: String(evidence.fileData || "").trim(),
+    fileStored: Boolean(evidence.fileStored),
+    fileNote: String(evidence.fileNote || "").trim(),
   };
 }
 
 function hasEvidence(activity) {
   const evidence = getEvidence(activity);
-  return Boolean(evidence.title || evidence.type || evidence.url || evidence.notes);
+  return Boolean(evidence.title || evidence.type || evidence.url || evidence.notes || evidence.fileName);
+}
+
+function formatFileSize(bytes) {
+  if (!bytes) {
+    return "Size unknown";
+  }
+
+  if (bytes < 1024) {
+    return `${bytes} B`;
+  }
+
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  }
+
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function isImageEvidence(evidence) {
+  return evidence.fileType.startsWith("image/") && evidence.fileData;
 }
 
 function isLinkValue(value) {
@@ -557,7 +657,14 @@ function getEvidenceLine(activity) {
     return "";
   }
 
-  return `Evidence: ${evidence.title || "Proof material"} — ${evidence.type || "Type not specified"} — ${evidence.url || "No link or file name added"}`;
+  const parts = [
+    evidence.title || "Proof material",
+    evidence.type || "Type not specified",
+    evidence.url || "",
+    evidence.fileName ? `File: ${evidence.fileName} (${evidence.fileType || "type unknown"}, ${formatFileSize(evidence.fileSize)})` : "",
+  ].filter(Boolean);
+
+  return `Evidence: ${parts.join(" — ")}`;
 }
 
 function sentenceCase(value) {
@@ -721,6 +828,18 @@ function updateRoomObject(activityId, updates) {
   };
   saveRoomLayouts();
   renderVaultRoom();
+}
+
+function scaleRoomStage() {
+  if (!roomScene || !roomStage) {
+    return;
+  }
+
+  const availableWidth = roomScene.clientWidth;
+  const scale = Math.min(1, availableWidth / ROOM_STAGE_WIDTH);
+
+  roomStage.style.transform = `scale(${scale})`;
+  roomScene.style.height = `${ROOM_STAGE_HEIGHT * scale}px`;
 }
 
 function resetRoomObject(activityId) {
@@ -980,6 +1099,16 @@ function requestAiImprovement(activity, purpose, fallbackDraft, requestId) {
 
 function renderAiOriginalContext(activity) {
   const evidence = getEvidence(activity);
+  const evidenceSummary = hasEvidence(activity)
+    ? [
+        evidence.title || "Proof material",
+        evidence.type || "Type not specified",
+        evidence.url,
+        evidence.fileName ? `${evidence.fileName} (${formatFileSize(evidence.fileSize)})` : "",
+      ]
+        .filter(Boolean)
+        .join(" · ")
+    : "No evidence added yet";
 
   aiOriginalContext.innerHTML = `
     <div class="ai-context-grid">
@@ -1001,11 +1130,7 @@ function renderAiOriginalContext(activity) {
       </div>
       <div>
         <span class="detail-label">Evidence / Proof</span>
-        <p>${
-          hasEvidence(activity)
-            ? `${escapeHTML(evidence.title || "Proof material")} · ${escapeHTML(evidence.type || "Type not specified")} · ${escapeHTML(evidence.url || "No link or file name added")}`
-            : "No evidence added yet"
-        }</p>
+        <p>${escapeHTML(evidenceSummary)}</p>
       </div>
     </div>
   `;
@@ -1530,6 +1655,7 @@ function renderVaultRoom() {
     })
     .join("");
 
+  scaleRoomStage();
   renderRoomEditPanel();
   renderRoomArchive();
 }
@@ -1803,7 +1929,7 @@ function buildScholarshipDocument(selectedActivities) {
         `Role: ${activity.role || "Participant"}`,
         `Dates: ${formatDateRange(activity)}`,
         `Weekly Hours: ${formatWeeklyHours(activity)}`,
-        `Estimated Total Hours: ${formatEstimatedTotalHours(activity)}`,
+        `Total Hours: ${formatEstimatedTotalHours(activity)}`,
         `Polished Description: ${getPolishedDescription(activity)}`,
         getImpactStatement(activity),
         `Skills Demonstrated: ${formatSkills(activity.skills, "Not specified")}`
@@ -1831,7 +1957,7 @@ function buildResumeDocument(selectedActivities) {
     const evidence = getEvidence(activity);
     lines.push(
       `## ${heading}`,
-      `Dates: ${formatDateRange(activity)} | Weekly Hours: ${formatWeeklyHours(activity)} | Estimated Total Hours: ${formatEstimatedTotalHours(activity)}`,
+      `Dates: ${formatDateRange(activity)} | Weekly Hours: ${formatWeeklyHours(activity)} | Total Hours: ${formatEstimatedTotalHours(activity)}`,
       `- ${output.resume}`,
       `- Demonstrated ${formatSkills(activity.skills, "transferable skills")} through ${activity.category || "student activity"} work with a clear contribution to ${trimEndingPunctuation(activity.impact || "the organization")}.`
     );
@@ -1840,6 +1966,7 @@ function buildResumeDocument(selectedActivities) {
       lines.push(`- Project link: ${evidence.url}`);
     }
 
+    addEvidenceLine(lines, activity);
     addActivityDivider(lines, index, selectedActivities.length);
   });
 
@@ -1886,7 +2013,7 @@ function buildPortfolioDocument(selectedActivities) {
       `Category: ${activity.category || "Other"}`,
       `Organization: ${activity.organization || "Not added"}`,
       `Weekly Hours: ${formatWeeklyHours(activity)}`,
-      `Estimated Total Hours: ${formatEstimatedTotalHours(activity)}`,
+      `Total Hours: ${formatEstimatedTotalHours(activity)}`,
       `Showcase Summary: ${getPolishedDescription(activity)}`,
       `Skills: ${formatSkills(activity.skills, "Not specified")}`,
       `${getImpactStatement(activity)}`,
@@ -2005,6 +2132,23 @@ function downloadTextFile(filename, text) {
   URL.revokeObjectURL(url);
 }
 
+function downloadEvidenceFile(activityId) {
+  const activity = getActivityById(activityId);
+  const evidence = activity ? getEvidence(activity) : null;
+
+  if (!evidence?.fileName || !evidence.fileData) {
+    return false;
+  }
+
+  const link = document.createElement("a");
+  link.href = evidence.fileData;
+  link.download = evidence.fileName;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  return true;
+}
+
 function renderEvidenceSection(activity) {
   const evidence = getEvidence(activity);
 
@@ -2017,6 +2161,24 @@ function renderEvidenceSection(activity) {
       ? `<a href="${escapeHTML(getLinkHref(evidence.url))}" target="_blank" rel="noopener noreferrer">${escapeHTML(evidence.url)}</a>`
       : `<span>${escapeHTML(evidence.url)}</span>`
     : `<span>Not added</span>`;
+  const fileMarkup = evidence.fileName
+    ? `
+      <div class="evidence-file-card">
+        ${isImageEvidence(evidence) ? `<img src="${escapeHTML(evidence.fileData)}" alt="${escapeHTML(evidence.fileName)}" loading="lazy" />` : ""}
+        <div>
+          <span class="detail-label">File</span>
+          <p>${escapeHTML(evidence.fileName)}</p>
+          <small>${escapeHTML(evidence.fileType || "Unknown type")} · ${escapeHTML(formatFileSize(evidence.fileSize))}</small>
+          ${evidence.fileNote ? `<small>${escapeHTML(evidence.fileNote)}</small>` : ""}
+          ${
+            evidence.fileData
+              ? `<button class="secondary-action download-evidence-button" type="button" data-id="${escapeHTML(activity.id)}">Download File</button>`
+              : `<small class="evidence-file-unavailable">File details saved only. Re-upload the file if you need a downloadable copy.</small>`
+          }
+        </div>
+      </div>
+    `
+    : "";
 
   return `
     <section class="evidence-block" aria-label="Evidence for ${escapeHTML(activity.title)}">
@@ -2026,6 +2188,7 @@ function renderEvidenceSection(activity) {
       </div>
       <p><span class="detail-label">Title:</span> ${escapeHTML(evidence.title) || "Not added"}</p>
       <p><span class="detail-label">URL/File:</span> ${urlMarkup}</p>
+      ${fileMarkup}
       ${evidence.notes ? `<p><span class="detail-label">Notes:</span> ${escapeHTML(evidence.notes)}</p>` : ""}
     </section>
   `;
@@ -2074,7 +2237,7 @@ function renderActivities() {
             <p><span class="detail-label">Organization:</span> ${escapeHTML(activity.organization) || "Not added"}</p>
             <p><span class="detail-label">Role:</span> ${escapeHTML(activity.role) || "Not added"}</p>
             <p><span class="detail-label">Weekly Hours:</span> ${escapeHTML(formatWeeklyHours(activity))}</p>
-            <p><span class="detail-label">Estimated Total Hours:</span> ${escapeHTML(formatEstimatedTotalHours(activity))}</p>
+            <p><span class="detail-label">Total Hours:</span> ${escapeHTML(formatEstimatedTotalHours(activity))}</p>
           </div>
 
           <div class="detail-grid">
@@ -2096,26 +2259,49 @@ function renderActivities() {
   renderStats();
 }
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const hoursEstimate = updateHoursEstimatePreview();
 
   if (hoursEstimate.status === "invalid") {
-    weeklyHoursInput.focus();
+    (hoursEstimate.source === "manual" ? manualTotalHoursInput : weeklyHoursInput)?.focus();
     return;
   }
 
-  activities = [getFormActivity(), ...activities];
+  const submitButton = form.querySelector('[type="submit"]');
+  const originalSubmitText = submitButton?.textContent;
+
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Saving...";
+  }
+
+  try {
+    activities = [await getFormActivity(), ...activities];
+  } catch (error) {
+    alert("ActivityVault could not save that evidence file. Try a smaller file or save the file name/link instead.");
+    console.error(error);
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalSubmitText;
+    }
+    return;
+  }
+
   saveActivities();
   renderActivities();
   form.reset();
   selectedSkills = [];
   renderSelectedSkills();
   updateHoursEstimatePreview();
+  if (submitButton) {
+    submitButton.disabled = false;
+    submitButton.textContent = originalSubmitText;
+  }
   document.querySelector("#title").focus();
 });
 
-[startDateInput, endDateInput, weeklyHoursInput].forEach((input) => {
+[startDateInput, endDateInput, weeklyHoursInput, manualTotalHoursInput].forEach((input) => {
   input.addEventListener("input", updateHoursEstimatePreview);
   input.addEventListener("change", updateHoursEstimatePreview);
 });
@@ -2220,7 +2406,7 @@ statElements.vaultRoomObjects?.addEventListener("pointerdown", (event) => {
     .forEach((roomObject) => roomObject.classList.toggle("selected", roomObject.dataset.id === selectedRoomActivityId));
   renderRoomEditPanel();
 
-  const scene = document.querySelector(".vault-room-scene");
+  const scene = roomStage;
   const activity = getActivityById(selectedRoomActivityId);
 
   if (!scene || !activity) {
@@ -2256,7 +2442,7 @@ statElements.vaultRoomObjects?.addEventListener("pointerdown", (event) => {
   objectButton.setPointerCapture(event.pointerId);
 });
 
-document.querySelector(".vault-room-scene")?.addEventListener("pointerdown", (event) => {
+roomStage?.addEventListener("pointerdown", (event) => {
   if (!isRoomEditMode || event.target.closest(".vault-room-object")) {
     return;
   }
@@ -2360,10 +2546,24 @@ window.addEventListener("pointerup", () => {
   activeRoomInteraction = null;
 });
 
+window.addEventListener("load", scaleRoomStage);
+window.addEventListener("resize", scaleRoomStage);
+
 activityList.addEventListener("click", (event) => {
   const improveButton = event.target.closest(".ai-improve-button");
   if (improveButton) {
     openAiAssistant(improveButton.dataset.id);
+    return;
+  }
+
+  const downloadEvidenceButton = event.target.closest(".download-evidence-button");
+  if (downloadEvidenceButton) {
+    const downloaded = downloadEvidenceFile(downloadEvidenceButton.dataset.id);
+    const originalText = downloadEvidenceButton.textContent;
+    downloadEvidenceButton.textContent = downloaded ? "Downloaded" : "Unavailable";
+    setTimeout(() => {
+      downloadEvidenceButton.textContent = originalText;
+    }, 1400);
     return;
   }
 
@@ -2407,6 +2607,14 @@ activityList.addEventListener("click", (event) => {
   const deleteButton = event.target.closest(".delete-button");
 
   if (!deleteButton) {
+    return;
+  }
+
+  const activity = getActivityById(deleteButton.dataset.id);
+  const activityTitle = activity?.title || "this activity";
+  const shouldDelete = window.confirm(`Delete "${activityTitle}" from your Vault? This cannot be undone.`);
+
+  if (!shouldDelete) {
     return;
   }
 

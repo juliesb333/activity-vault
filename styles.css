@@ -3111,6 +3111,108 @@ textarea:focus {
   }
 }
 
+/* Stable room coordinate system: furniture uses a fixed 1400x900 stage,
+   and the whole room scales down instead of recalculating furniture positions. */
+.vault-room-scene {
+  position: relative !important;
+  width: min(100%, 1080px) !important;
+  margin: 0 auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border: 2px solid rgba(234, 223, 206, 0.95) !important;
+  border-radius: 30px !important;
+  background: #f7e7dd !important;
+  box-shadow: inset 0 -22px 48px rgba(155, 130, 100, 0.09) !important;
+}
+
+.room-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1400px;
+  height: 900px;
+  overflow: hidden;
+  transform-origin: top left;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 253, 248, 0.3), rgba(255, 253, 248, 0.08)),
+    #f7e7dd;
+}
+
+.room-wall {
+  position: absolute !important;
+  inset: 0 0 32% !important;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.24) 1px, transparent 1px) 0 0 / 52px 52px,
+    linear-gradient(180deg, #fff6e8, #f2dfd5) !important;
+}
+
+.room-wall::after {
+  content: none !important;
+}
+
+.room-floor {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  height: 38% !important;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 1px, transparent 1px) 0 0 / 48px 48px,
+    linear-gradient(180deg, #ead6c5, #d7c5b2) !important;
+  clip-path: none !important;
+}
+
+.room-furniture {
+  position: absolute !important;
+  z-index: 2 !important;
+  object-fit: contain !important;
+  pointer-events: none !important;
+  filter: drop-shadow(0 18px 18px rgba(83, 103, 92, 0.16)) !important;
+  max-height: none !important;
+  transform: none !important;
+}
+
+.room-shelf {
+  top: 130px !important;
+  left: 50px !important;
+  width: 280px !important;
+}
+
+.room-bulletin {
+  top: 110px !important;
+  left: 800px !important;
+  right: auto !important;
+  width: 420px !important;
+  opacity: 0.92 !important;
+}
+
+.room-wall-shelf {
+  top: 200px !important;
+  left: 390px !important;
+  right: auto !important;
+  width: 300px !important;
+}
+
+.room-desk {
+  top: 430px !important;
+  left: 730px !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 590px !important;
+}
+
+.vault-room-objects {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 5 !important;
+}
+
+.vault-room-object,
+.vault-room-object[data-zone="floor"] {
+  width: var(--size) !important;
+}
+
 /* Final polish: chip-style Vault filters and clean export activity dividers. */
 .archive-page .filter-group,
 .filter-group {
@@ -3157,4 +3259,119 @@ textarea:focus {
   margin: 22px 0;
   border: 0;
   background: linear-gradient(90deg, transparent, rgba(79, 101, 74, 0.32), transparent);
+}
+
+.field-help {
+  display: block;
+  margin-top: 6px;
+  color: #738076;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+input[type="file"] {
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  border: 1px solid rgba(79, 111, 82, 0.2);
+  border-radius: 999px;
+  background: #e3f6f2;
+  color: #29473f;
+  padding: 8px 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.evidence-file-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+  border: 1px solid rgba(117, 188, 184, 0.32);
+  border-radius: 16px;
+  background: rgba(255, 253, 248, 0.68);
+  padding: 10px;
+}
+
+.evidence-file-card img {
+  width: 76px;
+  height: 76px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 8px 16px rgba(83, 103, 92, 0.12);
+}
+
+.evidence-file-card p,
+.evidence-file-card small {
+  display: block;
+  margin: 2px 0 0;
+}
+
+.evidence-file-card small {
+  color: #738076;
+  font-size: 0.76rem;
+}
+
+.download-evidence-button {
+  width: fit-content;
+  min-height: 34px;
+  margin-top: 10px;
+  border-color: rgba(117, 188, 184, 0.48);
+  background: #e3f6f2;
+  color: #29473f;
+  padding: 8px 13px;
+  font-size: 0.78rem;
+}
+
+.evidence-file-unavailable {
+  max-width: 32rem;
+  color: #9b746a !important;
+}
+
+@media (max-width: 560px) {
+  .evidence-file-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Vault sidebar: keep filters sticky but internally scrollable on desktop/tablet. */
+@media (min-width: 761px) {
+  .archive-sidebar {
+    position: sticky !important;
+    top: 104px !important;
+    align-self: start !important;
+  }
+
+  .archive-controls {
+    max-height: calc(100vh - 120px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(79, 111, 82, 0.28) transparent;
+  }
+
+  .archive-controls::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .archive-controls::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(79, 111, 82, 0.28);
+  }
+}
+
+@media (max-width: 760px) {
+  .archive-sidebar {
+    position: static !important;
+    top: auto !important;
+  }
+
+  .archive-controls {
+    max-height: none !important;
+    overflow-y: visible !important;
+    overscroll-behavior: auto !important;
+  }
 }

@@ -57,20 +57,22 @@
           </div>
 
           <div class="vault-room-scene" aria-live="polite">
-            <div class="room-wall"></div>
+            <div class="room-stage">
+              <div class="room-wall"></div>
 
-            <div class="room-floor"></div>
+              <div class="room-floor"></div>
 
-            <img class="room-furniture room-shelf" src="assets/shelf.png" alt="" aria-hidden="true" />
-            <img class="room-furniture room-bulletin" src="assets/dashboard.png" alt="" aria-hidden="true" />
-            <img class="room-furniture room-wall-shelf" src="assets/wall_shelf.png" alt="" aria-hidden="true" />
-            <img class="room-furniture room-desk" src="assets/desk.png" alt="" aria-hidden="true" />
+              <img class="room-furniture room-shelf" src="assets/shelf.png" alt="" aria-hidden="true" />
+              <img class="room-furniture room-bulletin" src="assets/dashboard.png" alt="" aria-hidden="true" />
+              <img class="room-furniture room-wall-shelf" src="assets/wall_shelf.png" alt="" aria-hidden="true" />
+              <img class="room-furniture room-desk" src="assets/desk.png" alt="" aria-hidden="true" />
 
-            <div class="vault-room-objects" id="vaultRoomObjects"></div>
+              <div class="vault-room-objects" id="vaultRoomObjects"></div>
 
-            <div class="vault-room-empty" id="vaultRoomEmpty">
-              <strong>This room is ready for your first object.</strong>
-              <span>Log your first activity to fill your vault room.</span>
+              <div class="vault-room-empty" id="vaultRoomEmpty">
+                <strong>This room is ready for your first object.</strong>
+                <span>Log your first activity to fill your vault room.</span>
+              </div>
             </div>
           </div>
 
@@ -249,12 +251,17 @@
                   Weekly Hours
                   <input id="weeklyHours" name="weeklyHours" type="number" min="0" step="0.5" placeholder="e.g. 3" />
                 </label>
+
+                <label>
+                  Total Hours Spent
+                  <input id="manualTotalHours" name="manualTotalHours" type="number" min="0" step="0.5" placeholder="e.g. 22" />
+                </label>
               </div>
 
               <div class="hours-estimate-card" aria-live="polite">
-                <span class="control-label">Estimated Total Hours</span>
+                <span class="control-label">Total Hours</span>
                 <strong id="estimatedTotalHoursPreview">Add dates and weekly hours to calculate.</strong>
-                <p id="hoursEstimateMessage">Calculated from the activity period and weekly hours.</p>
+                <p id="hoursEstimateMessage">Calculated from weekly hours, or saved from your manual total.</p>
                 <input id="estimatedTotalHours" name="estimatedTotalHours" type="hidden" value="" />
               </div>
             </section>
@@ -328,6 +335,17 @@
                   type="text"
                   placeholder="Paste a link or write the file name"
                 />
+              </label>
+
+              <label>
+                Evidence File
+                <input
+                  id="evidenceFile"
+                  name="evidenceFile"
+                  type="file"
+                  accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.txt,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.csv,.zip"
+                />
+                <small class="field-help">Upload a small image, PDF, document, spreadsheet, slide, zip, or other proof file.</small>
               </label>
 
               <label>
